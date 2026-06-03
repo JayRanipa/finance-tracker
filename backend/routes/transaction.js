@@ -45,4 +45,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+
+router.delete("/:id", async (req, res) => {
+  try {
+    await Transaction.findByIdAndDelete(req.params.id);
+
+    res.json({
+      message: "Transaction deleted successfully"
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
+});
 module.exports = router;
