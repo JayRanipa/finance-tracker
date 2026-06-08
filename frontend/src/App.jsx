@@ -3,7 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import Analytics from "./pages/Analytics";
 import Budget from "./pages/Budget";
 import Profile from "./pages/Profile";
-import Auth from "./pages/Auth";
+import Auth from "./pages/auth";
 
 function App() {
   return (
