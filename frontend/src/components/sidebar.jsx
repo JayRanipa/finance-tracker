@@ -20,7 +20,7 @@ function Sidebar({ isOpen, setIsOpen }) {
           cursor: "pointer",
         }}
       >
-        ☰
+       {isOpen ? "✕" : "☰"}
       </button>
 
       {/* Sidebar */}
@@ -28,8 +28,8 @@ function Sidebar({ isOpen, setIsOpen }) {
         style={{
           position: "fixed",
           top: 0,
-          left: isOpen ? "0" : "-250px",
-          width: "250px",
+          left: isOpen ? "0" : "-300px",
+          width: "300px",
           height: "100vh",
           background: "#1e293b",
           padding: "25px",

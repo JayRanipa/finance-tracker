@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { PieChart, Pie, Tooltip, Cell } from "recharts";
+import { useNavigate } from "react-router-dom";
 
 function Analytics() {
+  const navigate = useNavigate();
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -11,9 +13,9 @@ function Analytics() {
 
   const fetchTransactions = async () => {
     try {
-    const res = await axios.get(
-  "https://finance-tracker-backend-1yx2.onrender.com/api/transactions"
-);
+      const res = await axios.get(
+        "https://finance-tracker-backend-1yx2.onrender.com/api/transactions"
+      );
 
       setTransactions(res.data);
     } catch (error) {
@@ -43,6 +45,20 @@ function Analytics() {
         padding: "30px",
       }}
     >
+      <button
+  onClick={() => navigate("/")}
+  style={{
+    background:"transparent",
+    color:"white",
+    border:"none",
+    fontSize:"18px",
+    marginBottom:"20px",
+    cursor:"pointer"
+  }}
+>
+  ← Back to Dashboard
+</button>
+
       <h1>📊 Analytics</h1>
 
       <PieChart width={500} height={500}>

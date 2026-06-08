@@ -2,8 +2,21 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Sidebar from "../components/sidebar";
 
+
 function Dashboard() {
+  const user = JSON.parse(
+  localStorage.getItem("user")
+);
   const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+  const user = localStorage.getItem("user");
+
+  if (!user) {
+    window.location.href = "/auth";
+  }
+
+  fetchTransactions();
+}, []);
 
   const [transactions, setTransactions] = useState([]);
 
@@ -12,14 +25,11 @@ function Dashboard() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
 
-  useEffect(() => {
-    fetchTransactions();
-  }, []);
 
   const fetchTransactions = async () => {
     try {
-      const res = await axios.get(
-  "https://finance-tracker-backend-1yx2.onrender.com/api/transactions"
+     const res = await axios.get(
+  `https://finance-tracker-backend-1yx2.onrender.com/api/transactions/${user.id}`
 );
       setTransactions(res.data);
     } catch (error) {
@@ -28,28 +38,29 @@ function Dashboard() {
   };
 
   const addTransaction = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      await axios.post(
-  "https://finance-tracker-backend-1yx2.onrender.com/api/transactions/add",
-  {
-    type,
-    amount: Number(amount),
-    category,
-    description,
+  try {
+    await axios.post(
+      "https://finance-tracker-backend-1yx2.onrender.com/api/transactions/add",
+      {
+        userId: user.id,
+        type,
+        amount: Number(amount),
+        category,
+        description,
+      }
+    );
+
+    setAmount("");
+    setCategory("");
+    setDescription("");
+
+    fetchTransactions();
+  } catch (error) {
+    console.log(error);
   }
-);
-
-      setAmount("");
-      setCategory("");
-      setDescription("");
-
-      fetchTransactions();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+};
 
   const deleteTransaction = async (id) => {
     try {
@@ -71,6 +82,8 @@ function Dashboard() {
     .reduce((acc, curr) => acc + curr.amount, 0);
 
   const balance = income - expense;
+  const budget =
+  Number(localStorage.getItem("budget")) || 20000;
 
   return (
     <div
@@ -89,45 +102,90 @@ function Dashboard() {
       <div
         style={{
           flex: 1,
-          padding: "30px",
+          padding: "50px",
+maxWidth: "1600px",
+width: "100%",
+margin: "0 auto"
         }}
       >
-        <h1>💰 Finance Tracker Dashboard</h1>
+        <div style={{ marginBottom: "40px" }}>
+  <h1
+    style={{
+      fontSize: "50px",
+      fontWeight: "700",
+      marginBottom: "10px",
+    }}
+  >
+   
+  Welcome Back, {user?.name} 👋
+
+  </h1>
+
+  <p
+    style={{
+      color: "#94a3b8",
+      fontSize: "18px",
+    }}
+  >
+    Track. Save. Grow.
+  </p>
+</div>
 
         {/* Cards */}
         <div
-          style={{
-            display: "flex",
-            gap: "20px",
-            flexWrap: "wrap",
-            marginTop: "20px",
-          }}
-        >
-          <div style={cardStyle}>
-            <h3>Balance</h3>
-            <h1>₹{balance}</h1>
-          </div>
+  style={{
+    display: "grid",
+   gridTemplateColumns:
+  "repeat(auto-fit,minmax(250px,1fr))",
 
-          <div
-            style={{
-              ...cardStyle,
-              background: "#22c55e",
-            }}
-          >
-            <h3>Income</h3>
-            <h1>₹{income}</h1>
-          </div>
+    gap: "25px",
+    marginTop: "20px",
+  }}
+>
+  <div
+  style={{
+    ...cardStyle,
+    background:
+      "linear-gradient(135deg,#7c3aed,#a855f7)",
+  }}
+>
+  <h3>💰 Balance</h3>
+  <h1>₹{balance}</h1>
+</div>
 
-          <div
-            style={{
-              ...cardStyle,
-              background: "#ef4444",
-            }}
-          >
-            <h3>Expense</h3>
-            <h1>₹{expense}</h1>
-          </div>
-        </div>
+ <div
+  style={{
+    ...cardStyle,
+    background:
+      "linear-gradient(135deg,#7c3aed,#a855f7)",
+  }}
+>
+    <h3>📈 Income</h3>
+    <h1>₹{income}</h1>
+  </div>
+
+  <div
+    style={{
+      ...cardStyle,
+      background:
+        "linear-gradient(135deg,#dc2626,#ef4444)",
+    }}
+  >
+    <h3>📉 Expense</h3>
+    <h1>₹{expense}</h1>
+  </div>
+
+  <div
+    style={{
+      ...cardStyle,
+      background:
+        "linear-gradient(135deg,#2563eb,#3b82f6)",
+    }}
+  >
+    <h3>🎯 Budget</h3>
+    <h1>₹{budget}</h1>
+  </div>
+</div>
 
         {/* Add Transaction */}
         <div
@@ -245,10 +303,12 @@ function Dashboard() {
 }
 
 const cardStyle = {
-  background: "#8b5cf6",
-  padding: "20px",
-  borderRadius: "15px",
-  width: "250px",
+  flex: 1,
+  minWidth: "280px",
+  padding: "30px",
+  borderRadius: "30px",
+  color: "white",
+  boxShadow: "0 15px 35px rgba(0,0,0,.25)",
+  transition: "0.3s",
 };
-
 export default Dashboard;
