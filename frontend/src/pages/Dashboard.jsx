@@ -19,9 +19,8 @@ function Dashboard() {
   const fetchTransactions = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/transactions"
-      );
-
+  "https://finance-tracker-backend-1yx2.onrender.com/api/transactions"
+);
       setTransactions(res.data);
     } catch (error) {
       console.log(error);
@@ -33,14 +32,14 @@ function Dashboard() {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/transactions/add",
-        {
-          type,
-          amount: Number(amount),
-          category,
-          description,
-        }
-      );
+  "https://finance-tracker-backend-1yx2.onrender.com/api/transactions/add",
+  {
+    type,
+    amount: Number(amount),
+    category,
+    description,
+  }
+);
 
       setAmount("");
       setCategory("");
@@ -55,9 +54,8 @@ function Dashboard() {
   const deleteTransaction = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/transactions/${id}`
-      );
-
+  `https://finance-tracker-backend-1yx2.onrender.com/api/transactions/${id}`
+);
       fetchTransactions();
     } catch (error) {
       console.log(error);

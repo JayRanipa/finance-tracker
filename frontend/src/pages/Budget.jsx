@@ -12,9 +12,9 @@ function Budget() {
 
   const fetchTransactions = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/transactions"
-      );
+     const res = await axios.get(
+  "https://finance-tracker-backend-1yx2.onrender.com/api/transactions"
+);
 
       setTransactions(res.data);
     } catch (error) {
