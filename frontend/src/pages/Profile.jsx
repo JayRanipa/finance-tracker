@@ -9,22 +9,23 @@ const user = JSON.parse(
 );
   const [transactions, setTransactions] = useState([]);
 
-  useEffect(() => {
+ useEffect(() => {
+  if (user?.id) {
     fetchTransactions();
-  }, []);
+  }
+}, []);
 
-  const fetchTransactions = async () => {
-    try {
-      const res = await axios.get(
-        "https://finance-tracker-backend-1yx2.onrender.com/api/transactions"
-      );
+ const fetchTransactions = async () => {
+  try {
+    const res = await axios.get(
+      `https://finance-tracker-backend-1yx2.onrender.com/api/transactions/${user.id}`
+    );
 
-      setTransactions(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+    setTransactions(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
   const totalTransactions = transactions.length;
 
   const totalIncome = transactions
