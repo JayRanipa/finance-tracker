@@ -130,7 +130,16 @@ const user = JSON.parse(
             >
              {user?.email}
             </p>
-
+<p
+  style={{
+    color: "#94a3b8",
+    fontSize: "14px",
+    marginTop: "10px",
+    wordBreak: "break-all",
+  }}
+>
+  ID: {user?.id}
+</p>
             <p
               style={{
                 marginTop: "10px",
