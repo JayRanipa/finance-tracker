@@ -44,7 +44,7 @@ function Dashboard() {
     await axios.post(
       "https://finance-tracker-backend-1yx2.onrender.com/api/transactions/add",
       {
-        userId: user._id,
+        userId: user.id,
         type,
         amount: Number(amount),
         category,

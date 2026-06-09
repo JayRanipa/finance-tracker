@@ -18,7 +18,7 @@ const user = JSON.parse(
  const fetchTransactions = async () => {
   try {
     const res = await axios.get(
-      `https://finance-tracker-backend-1yx2.onrender.com/api/transactions/${user._id}`
+      `https://finance-tracker-backend-1yx2.onrender.com/api/transactions/${user.id}`
     );
 
     setTransactions(res.data);
